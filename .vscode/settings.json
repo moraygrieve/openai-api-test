@@ -1,14 +1,14 @@
 {
-    "editor.inlineSuggest.enabled": false,
+    "editor.inlineSuggest.enabled": true,
     "editor.quickSuggestions": {
-      "other": false,
-      "comments": false,
-      "strings": false
+      "other": true,
+      "comments": true,
+      "strings": true
     },
-    "editor.suggestOnTriggerCharacters": false,
-    "editor.acceptSuggestionOnEnter": "off",
-    "editor.parameterHints.enabled": false,
-    "editor.suggest.showWords": false,
+    "editor.suggestOnTriggerCharacters": true,
+    "editor.acceptSuggestionOnEnter": "on",
+    "editor.parameterHints.enabled": true,
+    "editor.suggest.showWords": true,
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
     "editor.detectIndentation": false,

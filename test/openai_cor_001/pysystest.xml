@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <pysystest type="auto">
-  
-  <description> 
-	<title>Test call the openai to ensure a string is returned</title>    
+
+  <description>
+	<title>Test call the openai to ensure an expected answer is returned</title>
 	<purpose><![CDATA[
 ]]>
 	</purpose>
   </description>
 
-  
+
   <classification>
 	<groups inherit="true">
 	  <group></group>
@@ -20,10 +20,10 @@
   <data>
 	<class name="PySysTest" module="run"/>
   </data>
-  
+
   <traceability>
 	<requirements>
-	  <requirement id=""/>     
+	  <requirement id=""/>
 	</requirements>
   </traceability>
 </pysystest>
