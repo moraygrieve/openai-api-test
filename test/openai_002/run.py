@@ -56,7 +56,7 @@ class PySysTest(BaseTest):
                     args = json.loads(x.arguments)
                     question = args.get("question", "")
                 except Exception as e:
-                    self.fail(f"Failed to parse function call arguments: {e}")
+                    self.addOutome(FAILED, "Failed to parse function call arguments", abortOnError=True)
 
                 result = self.ask_the_oracle(question)
 
@@ -67,26 +67,26 @@ class PySysTest(BaseTest):
                     "output": str(result)
                 })
 
-                response2 = client.responses.create(
+                response = client.responses.create(
                     model="gpt-4.1",
                     input=input_messages,
                     tools=tools,
                 )
                 self.log.info('The model asked the oracle - "%s"', question)
-                self.log.info(response2.output_text)
-                self.assertIn('42', response2.output_text, '42 should be mentioned')
-                self.assertIn('43', response2.output_text, '43 should be mentioned')
+                self.log.info(response.output_text)
+                self.assertTrue('42' in response.output_text, assertMessage='42 should be mentioned')
+                self.assertTrue('43' in response.output_text, assertMessage='43 should be mentioned')
                 break  # Only handle the first function call for this test
 
             elif x.type == 'message':
                 self.log.info('The model has responded directly')
                 self.log.info(response.output_text)
-                self.assertIn('42', response.output_text, '42 should be mentioned')
-                self.assertNotIn('43', response.output_text, '43 should not be mentioned')
+                self.assertTrue('42' in response.output_text, assertMessage='42 should be mentioned')
+                self.assertTrue('43' not in response.output_text, assertMessage='43 should not be mentioned')
                 break  # Only handle the first message for this test
 
         if not tool_used and all(x.type != 'message' for x in response.output):
-            self.addOutome(FAILED, "Model did not return a function call or message.")
+            self.addOutome(FAILED, "Model did not return a function call or message.", abortOnError=True)
 
         client.close()
 
