@@ -13,16 +13,10 @@ openai-api-test/
 ├── src/
 │   └── examples/
 │       └── weather.py      # Weather assistant with function calling
-├── test/
-│   ├── openai_001/        # PySys test for OpenAI API validation
-│   │   ├── run.py         # Test implementation
-│   │   ├── pysystest.xml  # Test configuration
-│   │   └── Output/        # Test output directory
-│   └── docker_001/        # PySys test for Docker API validation
-│       ├── run.py         # Test implementation
-│       ├── pysystest.xml  # Test configuration
-│       └── Output/        # Test output directory
-├── pysysproject.xml       # PySys project configuration
+├── test/                   # PySys tests for docker and OpenAI API
+│   ├── openai_001/
+│   ├── openai_002/
+│   └── docker_001/
 └── README.md
 ```
 
