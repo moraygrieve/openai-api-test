@@ -1,27 +1,34 @@
 # OpenAI API Test
 
-A Python project for experimenting with the OpenAI API and weather data integration.
+A Python project for experimenting with the OpenAI API, featuring examples and automated testing using PySys.
 
 ## Features
-- Uses OpenAI's function calling to answer weather-related questions.
-- Fetches real-time weather data from the Open-Meteo API.
-- Modular code structure with packages for easy extension.
+- **Weather Assistant**: Uses OpenAI's function calling to answer weather-related questions with real-time data from Open-Meteo API
+- **Story Generator**: Simple example demonstrating basic OpenAI API usage
+- **Automated Testing**: PySys-based test framework for validating OpenAI API responses
+- **Modular Examples**: Organized code structure for easy extension and experimentation
 
 ## Project Structure
 ```
-src/
-├── hello/
-│   ├── __init__.py
-│   └── hello_world.py
-└── weather/
-    ├── __init__.py
-    └── weather.py
+openai-api-test/
+├── src/
+│   └── examples/
+│       ├── weather.py      # Weather assistant with function calling
+│       └── story.py        # Simple story generation example
+├── test/
+│   └── openai_cor_001/     # PySys test for OpenAI API validation
+│       ├── run.py          # Test implementation
+│       ├── pysystest.xml   # Test configuration
+│       └── Output/         # Test output directory
+├── pysysproject.xml        # PySys project configuration
+└── README.md
 ```
 
 ## Requirements
-- Python 3.11 (recommended: `/opt/homebrew/opt/python@3.11/bin/python3.11`)
+- Python 3.11+ 
 - `openai` Python package
 - `requests` Python package
+- `pysys` Python package (for testing)
 
 ## Setup
 1. **Clone the repository:**
@@ -29,27 +36,76 @@ src/
    git clone <repo-url>
    cd openai-api-test
    ```
-2. **(Optional) Create a virtual environment:**
+
+2. **Install dependencies:**
    ```bash
-   /opt/homebrew/opt/python@3.11/bin/python3.11 -m venv venv
-   source venv/bin/activate
+   pip install openai requests pysys
    ```
-3. **Install dependencies:**
+
+3. **Set up OpenAI API key:**
    ```bash
-   pip install openai requests
+   export OPENAI_API_KEY="your-api-key-here"
    ```
 
 ## Usage
-To run the weather assistant example:
+
+### Running Examples
+
+**Weather Assistant:**
 ```bash
-python src/weather/weather.py
+python src/examples/weather.py
+```
+This example demonstrates OpenAI's function calling feature to:
+- Parse natural language weather queries
+- Extract location coordinates from user input
+- Call the Open-Meteo API to fetch current weather data
+- Provide formatted responses with temperature and weather details
+
+**Story Generator:**
+```bash
+python src/examples/story.py
+```
+A simple example that generates a one-sentence bedtime story using GPT-4.1.
+
+### Running Tests
+
+**Execute PySys tests:**
+```bash
+pysys run
 ```
 
-This will use OpenAI's function calling to answer a weather question and fetch real-time data for the requested location.
+**Run specific test:**
+```bash
+pysys run openai_cor_001
+```
+
+The test validates that the OpenAI API correctly responds to a specific prompt and asserts the expected answer.
+
+## How it Works
+
+### Weather Assistant
+The weather assistant uses OpenAI's function calling feature to:
+1. Parse natural language weather queries
+2. Extract location information and convert to coordinates
+3. Call the Open-Meteo API to fetch current weather data
+4. Provide formatted responses with temperature, conditions, and other weather details
+
+### Testing Framework
+The project uses PySys for automated testing:
+- Validates OpenAI API responses
+- Asserts expected outcomes
+- Provides detailed logging and output capture
+- Supports multiple test modes and configurations
+
+## API Dependencies
+- **OpenAI API**: For natural language processing and function calling (requires API key)
+- **Open-Meteo API**: For free weather data (no API key required)
 
 ## Customization
-- Modify `src/weather/weather.py` to change the prompt or add new tools.
-- Add new packages in `src/` for additional experiments.
+- Modify examples in `src/examples/` to experiment with different OpenAI API features
+- Add new PySys tests in `test/` directory for additional validation
+- Extend function calling capabilities by adding new API integrations
+- Customize test configurations in `pysysproject.xml`
 
 ## License
 MIT
