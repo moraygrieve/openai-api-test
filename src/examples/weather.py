@@ -5,7 +5,7 @@ import requests
 from openai import OpenAI
 
 logging.basicConfig(
-    format='%(asctime)s %(levelname)s %(message)s',
+    format="%(asctime)s %(levelname)s %(message)s",
     stream=sys.stdout,
     level=logging.INFO
 )
