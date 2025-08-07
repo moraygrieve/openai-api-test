@@ -4,7 +4,6 @@ A Python project for experimenting with the OpenAI API, featuring examples and a
 
 ## Features
 - **Weather Assistant**: Uses OpenAI's function calling to answer weather-related questions with real-time data from Open-Meteo API
-- **Story Generator**: Simple example demonstrating basic OpenAI API usage
 - **Automated Testing**: PySys-based test framework for validating OpenAI API responses
 - **Modular Examples**: Organized code structure for easy extension and experimentation
 
@@ -13,8 +12,7 @@ A Python project for experimenting with the OpenAI API, featuring examples and a
 openai-api-test/
 ├── src/
 │   └── examples/
-│       ├── weather.py      # Weather assistant with function calling
-│       └── story.py        # Simple story generation example
+│       └── weather.py      # Weather assistant with function calling
 ├── test/
 │   └── openai_cor_001/     # PySys test for OpenAI API validation
 │       ├── run.py          # Test implementation
@@ -25,7 +23,7 @@ openai-api-test/
 ```
 
 ## Requirements
-- Python 3.11+ 
+- Python 3.11+
 - `openai` Python package
 - `requests` Python package
 - `pysys` Python package (for testing)
@@ -61,12 +59,6 @@ This example demonstrates OpenAI's function calling feature to:
 - Call the Open-Meteo API to fetch current weather data
 - Provide formatted responses with temperature and weather details
 
-**Story Generator:**
-```bash
-python src/examples/story.py
-```
-A simple example that generates a one-sentence bedtime story using GPT-4.1.
-
 ### Running Tests
 
 **Execute PySys tests:**
@@ -79,7 +71,7 @@ pysys run
 pysys run openai_cor_001
 ```
 
-The test validates that the OpenAI API correctly responds to a specific prompt and asserts the expected answer.
+The test validates that the OpenAI API correctly responds to a specific prompt about the answer to the universe and asserts the expected answer (42).
 
 ## How it Works
 
