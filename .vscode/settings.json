@@ -1,9 +1,4 @@
 {
-    "cursor.suggest.autoTrigger": false,
-    "cursor.inlineCompletions.enabled": false,
-    "cursor.backgroundProcessing.enabled": false,
-    "cursor.showThinkingMessage": false,
-    "cursor.experimental.contextAnnotations.enabled": false,
     "editor.inlineSuggest.enabled": false,
     "editor.quickSuggestions": {
       "other": false,
