@@ -1,16 +1,14 @@
 import json
 from openai import OpenAI
+from pysys.constants import FAILED
 from pysys.basetest import BaseTest
-
-
 
 class PySysTest(BaseTest):
     def execute(self):
-
-        # create the client (API key is taken from the environment)
+        # Create the client (API key is taken from the environment)
         client = OpenAI()
 
-        # define the tools available, with a bit of a hint
+        # Define the tool available to the model
         tools = [{
             "type": "function",
             "name": "get_answer",
@@ -26,27 +24,40 @@ class PySysTest(BaseTest):
             "strict": True
         }]
 
-        # define the input messages
+        # Define the input messages
         input_messages = [
-            {"role": "system",
+            {
+                "role": "system",
                 "content": (
                     "You are a helpful assistant that reasons step-by-step before answering. "
                     "You are also a character from Hitchhiker's Guide to the Galaxy."
-                )},
-            {"role": "user","content": "What's the answer to the meaning of the universe? Please explain your reasoning."}
+                )
+            },
+            {
+                "role": "user",
+                "content": "What's the answer to the meaning of the universe? Please explain your reasoning."
+            }
         ]
 
-        # get the first response
+        # Get the first response
         response = client.responses.create(
             model="gpt-4.1",
             input=input_messages,
             tools=tools,
         )
 
-        # we hope it will use our tool to create the answer
+        # Track if the tool was used
+        tool_used = False
+
         for x in response.output:
             if x.type == 'function_call' and x.name == 'get_answer':
-                question = json.loads(x.arguments)["question"]
+                tool_used = True
+                try:
+                    args = json.loads(x.arguments)
+                    question = args.get("question", "")
+                except Exception as e:
+                    self.fail(f"Failed to parse function call arguments: {e}")
+
                 result = self.ask_the_oracle(question)
 
                 input_messages.append(x)
@@ -56,24 +67,29 @@ class PySysTest(BaseTest):
                     "output": str(result)
                 })
 
-                response = client.responses.create(
+                response2 = client.responses.create(
                     model="gpt-4.1",
                     input=input_messages,
                     tools=tools,
                 )
-                self.log.info('The model asked the oracle - \"%s\"', question)
-                self.log.info(response.output_text)
-                self.assertTrue('42' in response.output_text, assertMessage='42 should be mentioned')
-                self.assertTrue('43' in response.output_text, assertMessage='43 should be mentioned')
+                self.log.info('The model asked the oracle - "%s"', question)
+                self.log.info(response2.output_text)
+                self.assertIn('42', response2.output_text, '42 should be mentioned')
+                self.assertIn('43', response2.output_text, '43 should be mentioned')
+                break  # Only handle the first function call for this test
 
             elif x.type == 'message':
                 self.log.info('The model has responded directly')
                 self.log.info(response.output_text)
-                self.assertTrue('42' in response.output_text, assertMessage='42 should be mentioned')
-                self.assertTrue('43' not in response.output_text, assertMessage='43 should not be mentioned')
+                self.assertIn('42', response.output_text, '42 should be mentioned')
+                self.assertNotIn('43', response.output_text, '43 should not be mentioned')
+                break  # Only handle the first message for this test
 
+        if not tool_used and all(x.type != 'message' for x in response.output):
+            self.addOutome(FAILED, "Model did not return a function call or message.")
+
+        client.close()
 
     def ask_the_oracle(self, question):
         """The answer to any question is 43 (purposefully wrong)."""
         return 43
-

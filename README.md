@@ -74,9 +74,6 @@ pysys run openai_001
 pysys run docker_001
 ```
 
-- The OpenAI test validates that the OpenAI API correctly responds to a specific prompt about the answer to the universe and asserts the expected answer (42).
-- The Docker test validates that Docker containers can be started, interacted with, and produce the expected output.
-
 ## How it Works
 
 ### Weather Assistant

@@ -7,14 +7,14 @@ class PySysTest(BaseTest):
     def execute(self):
         client = docker.from_env()
 
-        # check running a container in the foreground (executes a task and dies)
+        # Check running a container in the foreground (executes a task and dies)
         self.log.info('Check running a docker container in the foreground')
         result = client.containers.run("alpine", ["echo", "hello", "world"])
         result = result.decode().strip()
         self.log.info('Returned output is %s', result)
         self.assertTrue(result == 'hello world', assertMessage='Assert expected response')
 
-        # check running a container in the background (stays alive to allow command execution)
+        # Check running a container in the background (stays alive to allow command execution)
         self.log.info('Check running a docker container in the background')
         container = client.containers.run( "alpine", tty=True, stdin_open=True, command="sh", detach=True)
         try:
