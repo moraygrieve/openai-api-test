@@ -13,5 +13,13 @@
     "editor.suggestOnTriggerCharacters": false,
     "editor.acceptSuggestionOnEnter": "off",
     "editor.parameterHints.enabled": false,
-    "editor.suggest.showWords": false
+    "editor.suggest.showWords": false,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true
 }
