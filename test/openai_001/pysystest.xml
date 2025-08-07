@@ -2,8 +2,9 @@
 <pysystest type="auto">
 
   <description>
-	<title>Test call the openai to ensure an expected answer is returned</title>
+	<title>Test model interaction via the OpenAI API</title>
 	<purpose><![CDATA[
+Performs a simple call to the GPT-4.1 mode, asking a question for which we expect a known answer.
 ]]>
 	</purpose>
   </description>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pysystest type="auto">
+
+  <description>
+	<title>Test container interaction via the docker API</title>
+	<purpose><![CDATA[
+Performs starting docker containers, both in the foreground where they run to completion returning a response,
+and where they run in the background allowing interaction with the container to perform tasks.
+]]>
+	</purpose>
+  </description>
+
+  <classification>
+	<groups inherit="true">
+	  <group></group>
+	</groups>
+	<modes inherit="true">
+	</modes>
+  </classification>
+
+  <data>
+	<class name="PySysTest" module="run"/>
+  </data>
+
+  <traceability>
+	<requirements>
+	  <requirement id=""/>
+	</requirements>
+  </traceability>
+</pysystest>

@@ -4,7 +4,7 @@ A Python project for experimenting with the OpenAI API, featuring examples and a
 
 ## Features
 - **Weather Assistant**: Uses OpenAI's function calling to answer weather-related questions with real-time data from Open-Meteo API
-- **Automated Testing**: PySys-based test framework for validating OpenAI API responses
+- **Automated Testing**: PySys-based test framework for validating OpenAI API and Docker responses
 - **Modular Examples**: Organized code structure for easy extension and experimentation
 
 ## Project Structure
@@ -14,11 +14,15 @@ openai-api-test/
 │   └── examples/
 │       └── weather.py      # Weather assistant with function calling
 ├── test/
-│   └── openai_cor_001/     # PySys test for OpenAI API validation
-│       ├── run.py          # Test implementation
-│       ├── pysystest.xml   # Test configuration
-│       └── Output/         # Test output directory
-├── pysysproject.xml        # PySys project configuration
+│   ├── openai_001/        # PySys test for OpenAI API validation
+│   │   ├── run.py         # Test implementation
+│   │   ├── pysystest.xml  # Test configuration
+│   │   └── Output/        # Test output directory
+│   └── docker_001/        # PySys test for Docker API validation
+│       ├── run.py         # Test implementation
+│       ├── pysystest.xml  # Test configuration
+│       └── Output/        # Test output directory
+├── pysysproject.xml       # PySys project configuration
 └── README.md
 ```
 
@@ -26,6 +30,7 @@ openai-api-test/
 - Python 3.11+
 - `openai` Python package
 - `requests` Python package
+- `docker` Python package (for Docker tests)
 - `pysys` Python package (for testing)
 
 ## Setup
@@ -37,13 +42,16 @@ openai-api-test/
 
 2. **Install dependencies:**
    ```bash
-   pip install openai requests pysys
+   pip install openai requests docker pysys
    ```
 
 3. **Set up OpenAI API key:**
    ```bash
    export OPENAI_API_KEY="your-api-key-here"
    ```
+
+4. **(Optional) Set up Docker:**
+   Ensure Docker is installed and running for Docker-based tests.
 
 ## Usage
 
@@ -61,17 +69,19 @@ This example demonstrates OpenAI's function calling feature to:
 
 ### Running Tests
 
-**Execute PySys tests:**
+**Execute all PySys tests:**
 ```bash
 pysys run
 ```
 
 **Run specific test:**
 ```bash
-pysys run openai_cor_001
+pysys run openai_001
+pysys run docker_001
 ```
 
-The test validates that the OpenAI API correctly responds to a specific prompt about the answer to the universe and asserts the expected answer (42).
+- The OpenAI test validates that the OpenAI API correctly responds to a specific prompt about the answer to the universe and asserts the expected answer (42).
+- The Docker test validates that Docker containers can be started, interacted with, and produce the expected output.
 
 ## How it Works
 
@@ -84,7 +94,7 @@ The weather assistant uses OpenAI's function calling feature to:
 
 ### Testing Framework
 The project uses PySys for automated testing:
-- Validates OpenAI API responses
+- Validates OpenAI API and Docker responses
 - Asserts expected outcomes
 - Provides detailed logging and output capture
 - Supports multiple test modes and configurations
@@ -92,6 +102,7 @@ The project uses PySys for automated testing:
 ## API Dependencies
 - **OpenAI API**: For natural language processing and function calling (requires API key)
 - **Open-Meteo API**: For free weather data (no API key required)
+- **Docker**: For container-based tests (requires Docker to be installed)
 
 ## Customization
 - Modify examples in `src/examples/` to experiment with different OpenAI API features
