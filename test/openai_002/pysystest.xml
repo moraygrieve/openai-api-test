@@ -2,9 +2,9 @@
 <pysystest type="auto">
 
   <description>
-	<title>Test client asks GPT-4.1 a simple question</title>
+	<title>Test client asks GPT-4.1 a simple question providing a tool to use</title>
 	<purpose><![CDATA[
-Performs a simple call to the GPT-4.1 mode, asking a question for which we expect a known answer.
+In this particular case the model has a tool made available to it that could help it answer the question.
 ]]>
 	</purpose>
   </description>

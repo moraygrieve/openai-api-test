@@ -10,7 +10,7 @@ class PySysTest(BaseTest):
         # using gpt-4.1 make a request for a question where we assume a known answer
         input_messages = [
             {"role": "system", "content": "You are a character from Hitchhiker's Guide to the Galaxy."},
-            {"role": "user", "content": "What's the answer to the universe? Just give the number, no other characters."}
+            {"role": "user", "content": "What's the answer to the meaning of the universe? Just give the number, no other characters."}
         ]
         response = client.responses.create(
             model="gpt-4.1",
