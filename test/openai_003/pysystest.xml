@@ -2,9 +2,10 @@
 <pysystest type="auto">
 
   <description>
-	<title>Test client asks GPT-4.1 with a more elaborate prompt</title>
+	<title>Test client asks GPT-4.1 with model misalignment via prompting</title>
 	<purpose><![CDATA[
-
+We include an assistant prompt into the input messages to see if the model uses the answer or rejects and supplies
+a more ethical one.
 ]]>
 	</purpose>
   </description>
