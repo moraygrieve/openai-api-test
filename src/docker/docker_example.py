@@ -7,14 +7,13 @@ logging.basicConfig(
 )
 
 class DockerInteractiveShell:
-    END_MARKER = "__END_OF_CMD__"
 
     def __init__(self, image="ubuntu"):
         self.client = docker.from_env()
         self.container = self.client.containers.run(
             image,
             command=["bash", "-c", "export PS1=''; exec sh"],
-            tty=True,
+            tty=False,
             stdin_open=True,
             detach=True,
         )
@@ -22,8 +21,7 @@ class DockerInteractiveShell:
         self.sock._sock.setblocking(False)
 
     def run(self, command, timeout=5):
-        end_marker="__END__"
-        full_cmd = f"{command}; echo {end_marker}\n"
+        full_cmd = f"{command}\n"
         self.sock._sock.send(full_cmd.encode())
 
         buffer = b""
@@ -35,14 +33,13 @@ class DockerInteractiveShell:
             if rlist:
                 chunk = self.sock._sock.recv(4096)
                 if not chunk: break
-                logging.info('Adding to buffer: %s', chunk)
                 buffer += chunk
                 output = buffer.decode(errors="ignore")
                 result.extend(output.splitlines())
             else:
                 time.sleep(0.01)
 
-        return "\n".join(result[1:-1]).strip()
+        return "\n".join(result).strip()
 
     def close(self):
         try:
@@ -67,4 +64,5 @@ if __name__ == "__main__":
     logging.info('Result: %s', shell.run("pwd"))
     logging.info('Result: %s', shell.run("cd /home"))
     logging.info('Result: %s', shell.run("pwd"))
+    logging.info('Result: %s', shell.run("ls -al"))
     shell.close()
