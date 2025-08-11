@@ -50,18 +50,6 @@ openai-api-test/
 
 ## Usage
 
-### Running Examples
-
-**Weather Assistant:**
-```bash
-python src/examples/weather.py
-```
-This example demonstrates OpenAI's function calling feature to:
-- Parse natural language weather queries
-- Extract location coordinates from user input
-- Call the Open-Meteo API to fetch current weather data
-- Provide formatted responses with temperature and weather details
-
 ### Running Tests
 
 **Execute all PySys tests:**
@@ -86,7 +74,6 @@ The project uses PySys for automated testing:
 
 ## API Dependencies
 - **OpenAI API**: For natural language processing and function calling (requires API key)
-- **Open-Meteo API**: For free weather data (no API key required)
 - **Docker**: For container-based tests (requires Docker to be installed)
 
 ## Customization
