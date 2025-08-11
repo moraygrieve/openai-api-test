@@ -2,9 +2,9 @@
 <pysystest type="auto">
 
   <description>
-	<title>Test docker container with non-interactive shell</title>
+	<title>Test docker container with interactive shell</title>
 	<purpose><![CDATA[
-Opens a docker container without an interactive shell, sends commands and receive results.
+Opens a docker container and keeps a shell open in it, to send commands and receive results.
 ]]>
 	</purpose>
   </description>
