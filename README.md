@@ -3,21 +3,22 @@
 A Python project for experimenting with the OpenAI API, featuring examples and automated testing using PySys.
 
 ## Features
-- **Weather Assistant**: Uses OpenAI's function calling to answer weather-related questions with real-time data from Open-Meteo API
 - **Automated Testing**: PySys-based test framework for validating OpenAI API and Docker responses
 - **Modular Examples**: Organized code structure for easy extension and experimentation
 
 ## Project Structure
 ```
 openai-api-test/
-├── src/
-│   └── examples/
-│       └── weather.py      # Weather assistant with function calling
-├── test/                   # PySys tests for docker and OpenAI API
-│   ├── openai_001/
-│   ├── openai_002/
-│   └── docker_001/
-└── README.md
+├── README.md
+├── pysysproject.xml
+├── src
+│   └── utils        # Utility classes
+└── test
+    ├── docker_001   # Docker tests
+    ├── docker_002
+    ├── openai_001   # OpenAI tests
+    ├── openai_002
+    └── openai_003
 ```
 
 ## Requirements
@@ -76,13 +77,6 @@ pysys run docker_001
 
 ## How it Works
 
-### Weather Assistant
-The weather assistant uses OpenAI's function calling feature to:
-1. Parse natural language weather queries
-2. Extract location information and convert to coordinates
-3. Call the Open-Meteo API to fetch current weather data
-4. Provide formatted responses with temperature, conditions, and other weather details
-
 ### Testing Framework
 The project uses PySys for automated testing:
 - Validates OpenAI API and Docker responses
@@ -96,7 +90,6 @@ The project uses PySys for automated testing:
 - **Docker**: For container-based tests (requires Docker to be installed)
 
 ## Customization
-- Modify examples in `src/examples/` to experiment with different OpenAI API features
 - Add new PySys tests in `test/` directory for additional validation
 - Extend function calling capabilities by adding new API integrations
 - Customize test configurations in `pysysproject.xml`
