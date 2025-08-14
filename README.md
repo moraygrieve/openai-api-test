@@ -1,10 +1,10 @@
 # OpenAI API Test
 
-A Python project for experimenting with the OpenAI API, featuring examples and automated testing using PySys.
+A Python project for experimenting with the OpenAI API, with Docker utilities and automated testing using PySys.
 
 ## Features
-- **Automated Testing**: PySys-based test framework for validating OpenAI API and Docker responses
-- **Modular Examples**: Organized code structure for easy extension and experimentation
+- **Automated testing**: PySys-based test suite for OpenAI and Docker workflows
+- **Docker utilities**: Reusable shells for non-interactive, interactive, and asynchronous container execution
 
 ## Project Structure
 ```
@@ -12,21 +12,24 @@ openai-api-test/
 ├── README.md
 ├── pysysproject.xml
 ├── src
-│   └── utils        # Utility classes
+│   └── utils
+│       └── docker.py         # Docker shell helpers
 └── test
-    ├── docker_001   # Docker tests
-    ├── docker_002
-    ├── openai_001   # OpenAI tests
-    ├── openai_002
-    └── openai_003
+    ├── docker_001            # Non-interactive shell tests
+    ├── docker_002            # Interactive shell tests
+    ├── docker_003            # Asynchronous shell tests
+    ├── openai_001            # Basic OpenAI response test
+    ├── openai_002            # Function-calling/tool-use test
+    └── openai_003            # YAML-driven prompt test
 ```
 
 ## Requirements
-- Python 3.11+
-- `openai` Python package
-- `requests` Python package
-- `docker` Python package (for Docker tests)
-- `pysys` Python package (for testing)
+- Python 3.8+ (matches `pysysproject.xml`)
+- Python packages:
+  - `openai`
+  - `pysys`
+  - `docker` (for Docker tests)
+  - `PyYAML` (for `openai_003`)
 
 ## Setup
 1. **Clone the repository:**
@@ -37,7 +40,7 @@ openai-api-test/
 
 2. **Install dependencies:**
    ```bash
-   pip install openai requests docker pysys
+   pip install openai pysys docker PyYAML
    ```
 
 3. **Set up OpenAI API key:**
@@ -45,23 +48,26 @@ openai-api-test/
    export OPENAI_API_KEY="your-api-key-here"
    ```
 
-4. **(Optional) Set up Docker:**
-   Ensure Docker is installed and running for Docker-based tests.
+4. Ensure Docker is installed and running (required for the Docker tests).
 
 ## Usage
 
 ### Running Tests
 
-**Execute all PySys tests:**
-```bash
-pysys run
-```
+- Run all tests:
+  ```bash
+  pysys run
+  ```
 
-**Run specific test:**
-```bash
-pysys run openai_001
-pysys run docker_001
-```
+- Run a specific test:
+  ```bash
+  pysys run docker_001
+  pysys run docker_002
+  pysys run docker_003
+  pysys run openai_001
+  pysys run openai_002
+  pysys run openai_003
+  ```
 
 ## How it Works
 
@@ -73,13 +79,25 @@ The project uses PySys for automated testing:
 - Supports multiple test modes and configurations
 
 ## API Dependencies
-- **OpenAI API**: For natural language processing and function calling (requires API key)
-- **Docker**: For container-based tests (requires Docker to be installed)
+- **OpenAI API**: Requires `OPENAI_API_KEY` in the environment for OpenAI tests
+- **Docker**: Required and must be running to execute Docker tests
 
-## Customization
-- Add new PySys tests in `test/` directory for additional validation
-- Extend function calling capabilities by adding new API integrations
-- Customize test configurations in `pysysproject.xml`
+## Test Overview
+
+- **docker_001 (Non-interactive shell)**: Executes single commands in a fresh shell each time (no persistent environment variables or working directory).
+- **docker_002 (Interactive shell)**: Keeps a shell session open; environment variables and working directory persist across commands.
+- **docker_003 (Asynchronous shell)**: Starts a long-running command and polls until completion, then captures the result.
+- **openai_001**: Simple response sanity check using `gpt-4.1` and verifies the model returns `42`.
+- **openai_002**: Demonstrates tool/function calling; handles both direct model responses and function-call paths.
+- **openai_003**: Loads a prompt from YAML (`test/openai_003/Input/prompt.yaml`) and asserts the model avoids a deceptive answer.
+
+## How it Works
+
+- PySys configuration is defined in `pysysproject.xml` (adds `./src` to the path).
+- Docker utilities live in `src/utils/docker.py` and provide:
+  - `DockerNonInteractiveShell`
+  - `DockerInteractiveShell`
+  - `DockerAsynchronousShell`
 
 ## License
 MIT
