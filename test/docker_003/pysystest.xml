@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <pysystest type="auto">
-  
-  <description> 
-	<title></title>    
+
+  <description>
+	<title>Test docker container with an asyncronous shell</title>
 	<purpose><![CDATA[
+Opens a docker container and keeps a shell open in it, to send commands asynconously, and receive the results via polling.
 ]]>
 	</purpose>
   </description>
 
-  <!-- uncomment this to skip the test:  
-  <skipped reason=""/> 
-  -->
-  
   <classification>
 	<groups inherit="true">
 	  <group></group>
@@ -23,10 +20,10 @@
   <data>
 	<class name="PySysTest" module="run"/>
   </data>
-  
+
   <traceability>
 	<requirements>
-	  <requirement id=""/>     
+	  <requirement id=""/>
 	</requirements>
   </traceability>
 </pysystest>
