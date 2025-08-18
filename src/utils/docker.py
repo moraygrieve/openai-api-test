@@ -1,6 +1,21 @@
 import docker, select, time
 import asyncio, threading
 
+class DockerFactory:
+
+    @classmethod
+    def non_interactive(cls, image="ubuntu"):
+        return DockerNonInteractiveShell(image)
+
+    @classmethod
+    def interactive(cls, image="ubuntu"):
+        return DockerInteractiveShell(image)
+
+    @classmethod
+    def asynchronous(cls, image="ubuntu"):
+        return DockerAsynchronousShell(image)
+
+
 class DockerShell:
 
     def __init__(self, image="ubuntu"):
@@ -123,3 +138,7 @@ class DockerAsynchronousShell(DockerShell):
     def _run_loop(self):
         asyncio.set_event_loop(self._loop)
         self._loop.run_forever()
+
+
+
+

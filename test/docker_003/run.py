@@ -1,11 +1,11 @@
 import time
 from pysys.constants import TIMEDOUT
 from pysys.basetest import BaseTest
-from utils.docker import DockerAsynchronousShell
+from utils.docker import DockerFactory
 
 class PySysTest(BaseTest):
     def execute(self):
-        shell = DockerAsynchronousShell()
+        shell = DockerFactory.asynchronous()
         shell.run("sleep 10; echo hello world")
 
         start = time.time()
