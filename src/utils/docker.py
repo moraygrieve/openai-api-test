@@ -18,43 +18,36 @@ class DockerFactory:
 
 class DockerShell:
 
-    def __init__(self, image="ubuntu"):
+    def __init__(self, image):
         self.client = docker.from_env()
+        self.cmd_whitelist = None
 
-    def wait_container(self, container, timeout=10):
-        start = time.time()
-        container.reload()
-        while container.status != 'running':
-            if (time.time() - start) > timeout:
-                raise Exception('Timed out waiting %d secs for container to be running'%timeout)
-            time.sleep(0.5)
-            container.reload()
+    def with_whitelist(self, commands):
+        self.cmd_whitelist = commands
+        return self
 
-    def close(self):
-        try:
-            self.container.stop(timeout=1)
-            self.container.remove(force=True)
-        except Exception:
-            pass
-
-    def __del__(self):
-        self.close()
+    def run(self, command):
+        cmd = command.split()[0] # assume first word is always the command
+        if self.cmd_whitelist is None: return
+        if (cmd not in self.cmd_whitelist):
+            raise Exception('Command is prohibited')
 
 
 class DockerNonInteractiveShell(DockerShell):
 
-    def __init__(self, image="ubuntu"):
+    def __init__(self, image):
         super().__init__(image)
         self.container = self.client.containers.run(image, command="bash", tty=False, stdin_open=True, detach=True)
 
     def run(self, command):
+        super().run(command)
         result = self.container.exec_run("bash -c \'%s\'" % command)
         result = result.output.decode().strip()
         return result.splitlines()
 
     def close(self):
         try:
-            self.container.stop(timeout=1)
+            self.container.stop()
             self.container.remove(force=True)
         except Exception:
             pass
@@ -65,7 +58,7 @@ class DockerNonInteractiveShell(DockerShell):
 
 class DockerInteractiveShell(DockerShell):
 
-    def __init__(self, image="ubuntu"):
+    def __init__(self, image):
         super().__init__(image)
         self.container = self.client.containers.run(image, command=["bash", "-c", "export PS1=''; exec sh"],
             tty=False, stdin_open=True, detach=True, )
@@ -73,6 +66,7 @@ class DockerInteractiveShell(DockerShell):
         self.sock._sock.setblocking(False)
 
     def run(self, command, timeout=5):
+        super().run(command)
         full_cmd = f"{command}\n"
         self.sock._sock.send(full_cmd.encode())
 
@@ -101,16 +95,20 @@ class DockerInteractiveShell(DockerShell):
             self.sock._sock.close()
         except Exception as e:
             pass
+
         try:
-            self.container.stop(timeout=1)
+            self.container.stop()
             self.container.remove(force=True)
         except Exception:
             pass
 
+    def __del__(self):
+        self.close()
+
 
 class DockerAsynchronousShell(DockerShell):
 
-    def __init__(self, image="ubuntu"):
+    def __init__(self, image):
         super().__init__(image)
         self._loop = asyncio.new_event_loop()
         self._thread = threading.Thread(target=self._run_loop, daemon=True)
@@ -119,6 +117,7 @@ class DockerAsynchronousShell(DockerShell):
         self.container = self.client.containers.run(image, command="bash", tty=False, stdin_open=True, detach=True)
 
     def run(self, command):
+        super().run(command)
         if self._future is None or self._future.done():
             self._future = asyncio.run_coroutine_threadsafe(self._run_command(command), self._loop)
 
@@ -139,6 +138,21 @@ class DockerAsynchronousShell(DockerShell):
         asyncio.set_event_loop(self._loop)
         self._loop.run_forever()
 
+    def close(self):
+        try:
+            self.container.stop()
+            self.container.remove(force=True)
+        except Exception as e:
+            pass
 
+        if self._loop.is_running():
+            self._loop.call_soon_threadsafe(self._loop.stop)
+            self._thread.join(timeout=2)
+
+        if not self._loop.is_closed():
+            self._loop.close()
+
+    def __del__(self):
+        self.close()
 
 
